@@ -1,0 +1,140 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fmodern\fcharset0 CourierNewPSMT;
+}
+{\colortbl;\red255\green255\blue255;\red0\green116\blue0;}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c45490\c0;}
+\margl1440\margr1440\vieww17740\viewh18740\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf0 mola data\
+\
+raw data available at:\
+\
+http://pds-geosciences.wustl.edu/missions/mgs/megdr.html\
+\
+Data has .img,  and .lbl files for each resolution (16, 32, 64 & 128 pixels/degree)\
+\
+Data in *.lbl files is metadata about the corresponding *.img file\
+\
+Data in *.img files is MSB_INTEGER, 16-bit\
+	i.e., MSB (most-significant byte) first.\
+	intel processors are little-endian, so will need byte swap.\
+		matlab program msb2lsb.m will do  byte-swap\
+\
+Raw data has the following 4 file  *.img  types:\
+	mega\'85img 		gravity map\
+	megc\'85img			# of observations per point.\
+	megr\'85img			\'93shape map\'94\
+	megt\'85img			topographic map.  looks like integer elevations.\
+\
+*.lbl is text file with info about corresponding img file.\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf0 Scaling at the equator:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 128		.463 km/pixel		463 m/pixel\
+64		.926 km/pixel		926 m/pixel\
+32		1.852 km/pixel		1852 m/pixel\
+16		3.705 km/pixel		3705 m/pixel\
+\
+Note:  the data is 16, 32\'85. pixels per degree, but the km/degree varies with latitude.\
+\
+For ECE 1305 purposes, we can use a fixed figure of, for example, 3.7 km/degree for mola_16 egm.\
+However, to be rigorous, one should actually use\
+\
+	3.704.46 * cos(lat) km/pixel\
+\
+or, for mola_16 & mola_32 data,\
+\
+	midrow = nrows/2;\
+	lat_radians = M_PI/2.0 * (midrow - row)/midrow;\
+	y_scaling = 3.704.46 ;	// in km/pixel\
+	x_scaling = 3.704.46 * cos(lat_radians);\
+\
+		for mola_64 * mola_128, you\'92ll need to adjust the above\
+\
+radius of Mars at equator:  3396 km\
+circumference:  21338 km\
+59.27 km/degree\
+\
+16:	3704.46  m/pix\
+32	1852.23 m/pix\
+64	926.12 m/pix\
+128	463.06 m/pix\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx9357\tx10080\tx10747\tx11472\tx12223\tx12926\tx13652\tx14355\tx15070\pardirnatural\partightenfactor0
+\cf0 Location of Interesting features\
+\
+	interactive mars explorer\
+		http://mars.nasa.gov/maps/explore-mars-map/fullscreen/\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx9357\tx10080\tx10747\tx11472\tx12223\tx12926\tx13652\tx14355\tx15070\pardeftab529\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf2 \CocoaLigature0      Olympus Mons (highest (known) volcano in solar system\
+		loc lat lon:  		18.65 N, 226.2 E\
+\
+\pard\tx529\pardeftab529\pardirnatural\partightenfactor0
+
+\f2\fs24 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx9357\tx10080\tx10747\tx11472\tx12223\tx12926\tx13652\tx14355\tx15070\pardeftab529\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf2 	Milankovic Crater:\
+\pard\tx529\pardeftab529\pardirnatural\partightenfactor0
+\cf2             loc lat lon:        54.7 N  146.7 W  (213.3)	better:  54.49 213.49\
+\
+
+\f2\fs24 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx9357\tx10080\tx10747\tx11472\tx12223\tx12926\tx13652\tx14355\tx15070\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf2  \
+\pard\tx529\pardeftab529\pardirnatural\partightenfactor0
+\cf2     Gale Crater (Where Curiosity Rover is exploring):\
+			landing site:  4.5895 S 137.4417 E\
+            loc lat/lon:        5.38 S   137.99 E			-5.30 137.84\
+  
+\f2\fs24 \cf0 \
+\
+		for 10-degree rectangle around gale crater, use;\
+			up left			+5, +128\
+			lo right		-10 +138\
+
+\f1\fs22 \cf2 \
+    Valles Marineris (Canyon):\
+				cuts diagonally ESE at az direction of -15 deg (+15 for left-hand-rule)\
+            loc lat/lon:        12.0 S, 285.0 E (75 W), but use:  9.5 S 285 E\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx9357\tx10080\tx10747\tx11472\tx12223\tx12926\tx13652\tx14355\tx15070\pardirnatural\partightenfactor0
+
+\f2\fs24 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx9357\tx10080\tx10747\tx11472\tx12223\tx12926\tx13652\tx14355\tx15070\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf2 	Candor Chasma (part of Valles Marineris)\
+\pard\tx529\pardeftab529\pardirnatural\partightenfactor0
+\cf2 			loc lat/lon:		6.6 S, 70.9 W (289.1)\
+ 
+\f2\fs24 \cf0 \
+
+\f1\fs22 \cf2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf0 \CocoaLigature1 Mars Landers:\
+	Pathfinder (spacecraft), Lander\
+	Sojourner (rover) 7/4/1997 .\
+		\
+	Spirit	1/4/2004 .\
+		Gusev Crater .  (got stuck in sand.  2,210 days)\
+	Opportunity 1/25/2004 .\
+		Meridiani Planum, Eagle Crater \
+	Phoenix\
+		Vastitas Borealis, Heimdal  (far north)\
+ 	Pathfinder. \
+ \
+\
+		3/25/2008\
+\
+\
+	Curiosity 8/6/2012 .\
+		Gale Crater, Mt. Sharp\
+	\
+	\
+	\
+\
+}
